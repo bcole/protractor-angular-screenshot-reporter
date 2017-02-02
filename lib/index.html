@@ -101,6 +101,8 @@
                             </div>
                             <div class="modal-footer">
                                 <a class="btn btn-primary" href="{{ctrl.getFilename(result.screenShotFile)}}" target="_blank">Open Image in New Tab <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>
+                                <button ng-if="$index > 0" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#imageModal{{$index - 1}}">Prev</button>
+                                <button ng-if="$index < ctrl.results.length - 1" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#imageModal{{$index + 1}}">Next</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </div>
                         </div>
