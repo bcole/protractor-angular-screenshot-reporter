@@ -27,7 +27,7 @@ require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
     protractor: {
       options: {
         keepAlive: true,
-        configFile: "protractor.conf.js"
+        configFile: "protractor.jasmine2.conf.js"
       },
       singlerun: {},
       auto: {

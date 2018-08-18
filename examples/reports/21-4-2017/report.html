@@ -3,31 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <title>Protractor Screenshot Report</title>
-
-    <link rel="stylesheet" href="assets/main.css">
-    <!-- Here will be CSS placed -->
-    <script src="assets/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
     <script src="app.js"></script>
-    <script src="assets/jquery.min.js"></script>
-    <script src="assets/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha256-KXn5puMvxCw+dAYznun+drMdG1IFl3agK0p/pqT9KAo= sha512-2e8qq0ETcfWRI4HJBzQiA3UoyFk6tbNyG+qSaIBZLyW9Xf3sWZHN/lxe9fTh1U45DpPf07yj94KsUHHWe4Yk1A=="
+            crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.css" crossorigin="anonymous">
+    <style>
+        body {
+            padding: 10px;
+        }
 
+        .modal-lg {
+            width: 95%;
+        }
+
+        .highlight {
+            background-color: #ffd600;
+        }
+
+        .browserLogLabel {
+            margin-right: 10px;
+        }
+
+        .browserLogItem {
+            margin-bottom: 10px;
+        }
+
+        .logContainer {
+            max-height: 488px;
+        }
+
+        .smallColumn {
+            width: 50px;
+        }
+
+        .mediumColumn {
+            width: 30%;
+        }
+
+        .status {
+            width: 70px;
+            text-align: right;
+        }
+
+        .duration {
+            width: 100%;
+        }
+
+        .testCase {
+            padding-left: 40px !important;
+            padding-top: 20px !important;
+        }
+
+        .spec {
+            /*background-color: grey;*/
+            /*color: white;*/
+            font-size: 200%;
+            padding-top: 80px !important;
+        }
+
+        .btn {
+            padding: 1px 10px;
+        }
+
+        table {
+            border-collapse: separate;
+        }
+
+        .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+            /*border-top: 0px;*/
+            padding: 4px;
+        }
+
+        .statusNumber {
+            font-size: 22px;
+            font-weight: 900;
+            margin: 4px;
+        }
+
+        .logColumn {
+            font-weight: 900;
+            width: 100px;
+        }
+
+        .consoleLogLabel {
+            font-size: 100%;
+            font-weight: 900;
+            margin: 3px;
+            cursor:pointer;
+        }
+
+        .label-white {
+            background-color: #ffffff;
+            color: #444444;
+            font-size: 92%;
+            margin: 3px;
+            cursor:pointer;
+        }
+
+
+    </style>
 </head>
 <body ng-controller="ScreenshotReportController as ctrl" class="ng-cloak">
 
 <!-- Header -->
 <h2>
-    <!-- Here goes title -->
+    Test Results
     <div class="pull-right">
-        <button class="btn btn-default" ng-class="{active: !ctrl.displayTime}"
+        <button class="btn btn-default" ng-class="{active: ctrl.displayTime}"
                 ng-click="ctrl.displayTime = !ctrl.displayTime">TIME
         </button>
-        <button class="btn btn-default" ng-class="{active: !ctrl.displayBrowser}"
+        <button class="btn btn-default" ng-class="{active: ctrl.displayBrowser}"
                 ng-click="ctrl.displayBrowser = !ctrl.displayBrowser">BROWSER
         </button>
-        <button class="btn btn-default" ng-class="{active: !ctrl.displaySessionId}"
+        <button class="btn btn-default" ng-class="{active: ctrl.displaySessionId}"
                 ng-click="ctrl.displaySessionId = !ctrl.displaySessionId">SESSION ID
         </button>
-        <button class="btn btn-default" ng-class="{active: !ctrl.displayOS}"
+        <button class="btn btn-default" ng-class="{active: ctrl.displayOS}"
                 ng-click="ctrl.displayOS = !ctrl.displayOS">OS
         </button>
         <button class="btn btn-default" ng-class="{active: ctrl.inlineScreenshots}"
@@ -37,21 +132,21 @@
 </h2>
 
 <!-- Pass/Fail counts -->
-<div class="progress progress-striped">
+<div class="progress progress-striped" style="height: 30px;">
     <div class="progress-bar progress-bar-success" ng-if="ctrl.passCount()" data-toggle="tooltip"
          title="Passed: {{ctrl.passCount()}} {{str = (ctrl.failCount() ? '' : '(no failures!)'); str}}"
-         ng-style="{'width': (ctrl.passCount() / (ctrl.passCount()+ctrl.failCount()+ctrl.pendingCount()) * 100) + '%'}"><div class="statusNumber">{{ctrl.passCount()}}</div></div>
+         style="width: {{ctrl.passCount() / (ctrl.passCount()+ctrl.failCount()+ctrl.pendingCount()) * 100}}%"><div class="statusNumber">{{ctrl.passCount()}}</div></div>
     <div class="progress-bar progress-bar-warning" ng-if="ctrl.pendingCount()" data-toggle="tooltip"
          title="Pending: {{ctrl.pendingCount()}}"
-         ng-style="{'width': (ctrl.pendingCount() / (ctrl.passCount()+ctrl.failCount()+ctrl.pendingCount()) * 100) + '%'}"><div class="statusNumber">{{ctrl.pendingCount()}}</div></div>
+         style="width: {{ctrl.pendingCount() / (ctrl.passCount()+ctrl.failCount()+ctrl.pendingCount()) * 100}}%"><div class="statusNumber">{{ctrl.pendingCount()}}</div></div>
     <div class="progress-bar progress-bar-danger" ng-if="ctrl.failCount()" data-toggle="tooltip"
          title="Failed: {{ctrl.failCount()}}"
-         ng-style="{'width': (ctrl.failCount() / (ctrl.passCount()+ctrl.failCount()+ctrl.pendingCount()) * 100) + '%'}"><div class="statusNumber">{{ctrl.failCount()}}</div></div>
+         style="width: {{ctrl.failCount() / (ctrl.passCount()+ctrl.failCount()+ctrl.pendingCount()) * 100}}%"><div class="statusNumber">{{ctrl.failCount()}}</div></div>
 </div>
 
 <label>Search: <input ng-model="searchSettings.description"></label>
 <div class="pull-right">
-    <button class="btn btn-default" ng-class="{active: searchSettings.allselected}" ng-click="ctrl.chooseAllTypes()">ALL</button>
+    <button class="btn btn-default" ng-click="ctrl.chooseAllTypes()">ALL</button>
     <button class="btn btn-default" ng-class="{active: searchSettings.passed}"
             ng-click="searchSettings.passed = !searchSettings.passed">PASSED
     </button>
@@ -72,11 +167,11 @@
     <thead>
     <tr class="active">
         <th>Status</th>
-        <th ng-if="!ctrl.displayTime" ng-show="ctrl.displayTime">Time</th>
+        <th ng-show="ctrl.displayTime">Time</th>
         <th>Description</th>
-        <th ng-if="!ctrl.displayBrowser" ng-show="ctrl.displayBrowser">Browser</th>
-        <th ng-if="!ctrl.displaySessionId" ng-show="ctrl.displaySessionId">Session ID</th>
-        <th ng-if="!ctrl.displayOS" ng-show="ctrl.displayOS">OS</th>
+        <th ng-show="ctrl.displayBrowser">Browser</th>
+        <th ng-show="ctrl.displaySessionId">Session ID</th>
+        <th ng-show="ctrl.displayOS">OS</th>
         <th>Message</th>
         <th>Log</th>
         <th>Stack</th>
@@ -106,13 +201,13 @@
         <td class="smallColumn status" ng-if="result.pending">
             <span class="label label-warning"><span class="glyphicon glyphicon-option-horizontal"></span></span>
         </td>
-        <td class="smallColumn" ng-if="!ctrl.displayTime" ng-show="ctrl.displayTime">
+        <td class="smallColumn" ng-show="ctrl.displayTime">
             <span class="label label-default" ng-class="{'label-warning': result.duration > 14, 'label-danger': result.duration > 19}">{{ctrl.round(result.duration, 1)}} s</span>
         </td>
         <td class="mediumColumn">{{ctrl.getShortDescription(result.description)}}</td>
-        <td ng-if="!ctrl.displayBrowser" ng-show="ctrl.displayBrowser">{{result.browser.name}} {{result.browser.version}}</td>
-        <td ng-if="!ctrl.displaySessionId" ng-show="ctrl.displaySessionId">{{result.sessionId}}</td>
-        <td ng-if="!ctrl.displayOS" ng-show="ctrl.displayOS">{{result.os}}</td>
+        <td ng-show="ctrl.displayBrowser">{{result.browser.name}} {{result.browser.version}}</td>
+        <td ng-show="ctrl.displaySessionId">{{result.sessionId}}</td>
+        <td ng-show="ctrl.displayOS">{{result.os}}</td>
         <td>{{result.message}}</td>
         <td class="logColumn">
             <!--<button class="btn btn-warning pull-right" data-toggle="modal" data-target="#modal{{$index}}" ng-if="result.logWarnings > 0">{{result.logWarnings}}</button>-->
@@ -123,9 +218,8 @@
         <td class="smallColumn">
             <!-- Show stacktrace if failure -->
             <div ng-if="(!result.passed && !result.pending) || result.browserLogs.length > 0">
-                <span class="label label-white ng-binding pull-right" data-toggle="modal" data-target="#modal{{$index}}" ng-if="result.trace.length > 0">
-                    <span class="glyphicon glyphicon-warning-sign red"></span>
-                </span>
+                <span class="label label-white ng-binding pull-right" data-toggle="modal" data-target="#modal{{$index}}" ng-if="result.trace.length > 0"><span class="glyphicon glyphicon-warning-sign"></span></span>
+                <!--<button class="btn btn-default" data-toggle="modal" data-target="#modal{{$index}}" ng-if="result.trace.length > 0"><span class="glyphicon glyphicon-warning-sign"></span></button>-->
                 <!-- Stacktrace Modal -->
                 <div class="modal" id="modal{{$index}}" tabindex="-1" role="dialog"
                      aria-labelledby="modalLabel{{$index}}">
@@ -154,7 +248,7 @@
                                 <button class="btn btn-default"
                                         ng-class="{active: ctrl.showSmartStackTraceHighlight}"
                                         ng-click="ctrl.showSmartStackTraceHighlight = !ctrl.showSmartStackTraceHighlight">
-                                    <span class="glyphicon glyphicon-education black"></span> Smart Stack Trace
+                                    <span class="glyphicon glyphicon-education"></span> Smart Stack Trace
                                 </button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </div>
@@ -169,10 +263,10 @@
                       class="label label-white ng-binding pull-right"
                       data-toggle="modal"
                       data-target="#imageModal{{$index}}">
-                            <span class="glyphicon glyphicon-picture black"></span>
+                            <span class="glyphicon glyphicon-picture"></span>
                 </span>
                 <a href="" ng-if="ctrl.inlineScreenshots && result.screenShotFile" data-toggle="modal" data-target="#imageModal{{$index}}">
-                    <img ng-src="{{result.screenShotFile}}" class="screenshotLink"/></a>
+                    <img ng-src="{{result.screenShotFile}}" style="max-width: 100%"/></a>
                 <!-- Screenshot Modal -->
                 <div class="modal" id="imageModal{{$index}}" tabindex="-1" role="dialog"
                      aria-labelledby="imageModalLabel{{$index}}">
@@ -188,7 +282,7 @@
                                     {{ctrl.getShortDescription(result.description)}}</h5>
                             </div>
                             <div class="modal-body">
-                                <img class="screenshotImage" ng-src="{{result.screenShotFile}}">
+                                <img style="width: 100%" ng-src="{{result.screenShotFile}}">
                             </div>
                             <div class="modal-footer">
                                 <div class="pull-left">
@@ -216,11 +310,7 @@
     </tr>
     </tbody>
 </table>
-<div class="center">
-    <a class="github-button" href="https://github.com/Evilweed/protractor-beautiful-reporter" data-size="large" data-show-count="true" aria-label="Star Evilweed/protractor-beautiful-reporter on GitHub">Star</a>
-</div>
 {{ctrl.currentParent = "";""}}
-<script src="assets/main.js"></script>
-<script async defer src="assets/buttons.js"></script>
+<script src="assets/scripts/main.js"></script>
 </body>
 </html>
